@@ -13,7 +13,6 @@ def read_config(settings_file):
             config[key] = value
     return config
 
-
 config = read_config(settings_file)
 TOKEN_VK = config['TOKEN_VK']
 TOKEN_TG = config['TOKEN_TG']

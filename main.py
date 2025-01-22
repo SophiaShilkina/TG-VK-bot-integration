@@ -1,6 +1,5 @@
 from sett import TOKEN_TG
 
-import asyncio
 import time
 import telebot
 

@@ -3,7 +3,6 @@ import time
 import random
 
 from vksession import vk_ms
-from sett import CHAT_ID
 from keyboards import keyboard_tg
 from upload import attachment
 
