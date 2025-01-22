@@ -19,4 +19,3 @@ def attachment():
     access_key = photo[0]['access_key']
     attachment = f'photo{owner_id}_{photo_id}_{access_key}'
     return attachment
-

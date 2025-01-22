@@ -12,7 +12,6 @@ from actionsdb import checking_user_in_database, changing_act
 longpoll = VkLongPoll(vk_session)
 
 
-
 async def message_handler(event, db):
 
     userAct = '0'

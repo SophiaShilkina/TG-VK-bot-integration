@@ -7,6 +7,7 @@ from keyboards import keyboard_tg
 from upload import attachment
 
 
+
 async def update_user_data(idu):
     while_exit = 0
     while while_exit != 1:

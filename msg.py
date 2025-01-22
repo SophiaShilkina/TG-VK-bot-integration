@@ -16,4 +16,3 @@ async def write_msg(user_id, message, keyboard=None):
         post = post
 
     vk_session.method('messages.send', post)
-

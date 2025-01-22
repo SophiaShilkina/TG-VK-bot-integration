@@ -15,4 +15,3 @@ async def init_db():
             pastRooms TEXT
         )""")
         await db.commit()
-

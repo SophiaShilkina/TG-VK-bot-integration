@@ -25,4 +25,3 @@ async def changing_act(idu, userAct):
         async with db.execute(f'SELECT act FROM users WHERE userId = "{idu}"') as cursor:
             userAct = cursor.fetchone()[0]
             return userAct
-

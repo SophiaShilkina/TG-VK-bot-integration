@@ -48,3 +48,4 @@ key_ready = types.InlineKeyboardButton(text='Готово', callback_data='ready
 keyboard_tg1.add(key_ready)
 key_allFail = types.InlineKeyboardButton(text='Неверно 2-5 пункты', callback_data='allFail')
 keyboard_tg1.add(key_allFail)
+
