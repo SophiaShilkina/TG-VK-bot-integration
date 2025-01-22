@@ -30,3 +30,4 @@ async def main():
 
 # Запуск асинхронной функции
 asyncio.run(main())
+
