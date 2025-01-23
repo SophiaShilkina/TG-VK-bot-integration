@@ -9,7 +9,7 @@ def attachment():
     photo = None
     while not photo:
         try:
-            photo = upload.photo_messages('C:/Users/София/Desktop/бот Кристофер Хостел/oglIvYmhtLU.jpg')
+            photo = upload.photo_messages('prices.jpg')
             print("Фото загружено.")
         except KeyboardInterrupt:
             print("Программа была прервана пользователем.")
@@ -19,4 +19,3 @@ def attachment():
     access_key = photo[0]['access_key']
     attachment = f'photo{owner_id}_{photo_id}_{access_key}'
     return attachment
-

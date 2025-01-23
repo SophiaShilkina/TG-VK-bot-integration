@@ -1,28 +1,113 @@
 import aiosqlite
-
+from vksession import vk_ms
+import time
+import asyncio
 
 # Проверяем пользователя в базе данных
 async def checking_user_in_database(idu):
     async with aiosqlite.connect('action.db') as db:
-        async with db.execute(f'SELECT userId FROM users WHERE userId = "{idu}"') as cursor:
+        async with db.execute('SELECT userId FROM users WHERE userId = ?', (idu,)) as cursor:
             user_in_database = await cursor.fetchone()
             if user_in_database is None:
                 await db.execute(
                     'INSERT INTO users (userId, act, fullname, data, persons, gender, room, pastRooms) '
                     'VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                    (idu, 'get_data', '0', '0', '0', '0', '0', '0')
+                    (idu, 'start', '0', '0', '0', '0', '0', '0')
                 )
                 await db.commit()
+
+        async with db.execute('SELECT act FROM users WHERE userId = ?', (idu,)) as cursor:
+            result = await cursor.fetchone()
+            if result is not None:
+                userAct = result[0]
+                return userAct
             else:
-                await db.execute(f'UPDATE users SET act = get_data WHERE userId = "{idu}"')
+                return None
 
 
-# Переходим на шаг get_persons
+# Изменение шага и заполнение базы пользовательскими данными
+async def saving_between_responses(idu, userAct):
+    while_exit = 0
+    while while_exit != 1:
+        try:
+            await asyncio.sleep(1)
+            message_text = vk_ms.messages.getHistory(user_id=idu, count=1)['items'][0]['text']
+            if len(message_text) < 50:
+                async with aiosqlite.connect('action.db') as db:
+                    await db.execute(f'UPDATE users SET act = ?, {userAct} = ? WHERE userId = ?',
+                                     (userAct, message_text, idu,))
+                    if userAct == "room":
+                        await db.execute('UPDATE users SET pastRooms = ? WHERE userId = ?', (message_text, idu,))
+                    await db.commit()
+                    async with db.execute('SELECT act FROM users WHERE userId = ?', (idu,)) as cursor:
+                        result = await cursor.fetchone()
+                        if result is not None:
+                            userAct = result[0]
+                    while_exit = 1
+                    return userAct
+
+        except:
+            pass
+        time.sleep(1)
+
+
+# Изменение шага
 async def changing_act(idu, userAct):
     async with aiosqlite.connect('action.db') as db:
-        await db.execute(f"UPDATE users SET act = {userAct} WHERE userId = {idu}")
+        await db.execute('UPDATE users SET act = ? WHERE userId = ?', (userAct, idu,))
         await db.commit()
-        async with db.execute(f'SELECT act FROM users WHERE userId = "{idu}"') as cursor:
-            userAct = cursor.fetchone()[0]
-            return userAct
 
+
+# Ответ пользователю с его ранее введенными данными на проверку
+async def presentation_of_information(idu):
+    async with aiosqlite.connect('action.db') as db:
+        async with db.execute('SELECT * FROM users WHERE userId = ?', (idu,)) as cursor:
+            record = await cursor.fetchone()
+            if record:
+                dates, persons, gender, room = record[3], record[4], record[5], record[6]
+            else:
+                dates, persons, gender, room = None, None, None, None
+
+            text = (f'Спасибо, я внимательно все записал. Проверьте, пожалуйста, '
+                    f'правильность введенных данных:\n\n'
+                    f'📆 Даты: {dates}\n'
+                    f'👔 Количество персон: {persons}\n'
+                    f'👫 Мужчины и женщины: {gender}\n'
+                    f'🏡 Комнаты: {room}\n')
+            return text
+
+
+# Внесение имени пользователя в бд
+async def get_user_name(idu, fullname):
+    async with aiosqlite.connect('action.db') as db:
+        await db.execute('UPDATE users SET fullname = ? WHERE userId = ?', (fullname, idu,))
+        await db.commit()
+
+
+# Подготовка текста сообщения с информацией от пользователя админу
+async def information_to_admin(idu):
+    async with aiosqlite.connect('action.db') as db:
+        async with db.execute('SELECT * FROM users WHERE userId = ?', (idu,)) as cursor:
+            record = await cursor.fetchone()
+            if record:
+                name, dates, persons, gender, room = record[2], record[3], record[4], record[5], record[6]
+            else:
+                name, dates, persons, gender, room = None, None, None, None, None
+
+        message_1 = (f'1. Имя: <b>{name}</b>\n'
+                     f'2. Даты: <b>{dates}</b>\n'
+                     f'3. Человек: <b>{persons}</b>\n'
+                     f'4. М/Ж: <b>{gender}</b>\n'
+                     f'5. Комнаты: <b>{room}</b>')
+        return message_1
+
+
+async def return_user_name(idu):
+    async with aiosqlite.connect('action.db') as db:
+        async with db.execute('SELECT fullname FROM users WHERE userId = ?', (idu,)) as cursor:
+            result = await cursor.fetchone()
+            if result is not None:
+                fullname = result[0]
+                return fullname
+            else:
+                return None

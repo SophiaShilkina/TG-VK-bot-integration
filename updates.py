@@ -5,6 +5,8 @@ import random
 from vksession import vk_ms
 from keyboards import keyboard_tg
 from upload import attachment
+from vksession import bot
+from sett import CHAT_ID
 
 
 async def update_user_data(idu):
@@ -14,7 +16,7 @@ async def update_user_data(idu):
             message_text = vk_ms.messages.getHistory(user_id=idu, count=1)['items'][0]['text']
             if len(message_text) < 89:
                 async with aiosqlite.connect("action.db") as db:
-                    await db.execute(f'UPDATE users SET data = "{message_text}" WHERE userId = "{idu}"')
+                    await db.execute(f'UPDATE users SET data = ? WHERE userId = ?', (message_text, idu,))
                     await db.commit()
                     while_exit = 1
                     return message_text.text
@@ -31,7 +33,7 @@ async def update_user_persons(idu):
             message_text = vk_ms.messages.getHistory(user_id=idu, count=1)['items'][0]['text']
             if len(message_text) < 84:
                 async with aiosqlite.connect("action.db") as db:
-                    await db.execute(f'UPDATE users SET persons = "{message_text}" WHERE userId = "{idu}"')
+                    await db.execute(f'UPDATE users SET persons = ? WHERE userId = ?', (message_text, idu,))
                     await db.commit()
                     while_exit = 1
                     return message_text.text
@@ -48,7 +50,7 @@ async def update_user_gender(idu):
             message_text = vk_ms.messages.getHistory(user_id=idu, count=1)['items'][0]['text']
             if len(message_text) < 108:
                 async with aiosqlite.connect("action.db") as db:
-                    await db.execute(f'UPDATE users SET gender = "{message_text}" WHERE userId = "{idu}"')
+                    await db.execute(f'UPDATE users SET gender = ? WHERE userId = ?', (message_text, idu,))
                     await db.commit()
                     while_exit = 1
                     return message_text.text
@@ -65,8 +67,8 @@ async def update_user_room(idu):
             message_text = vk_ms.messages.getHistory(user_id=idu, count=1)['items'][0]['text']
             if len(message_text) < 186:
                 async with aiosqlite.connect("action.db") as db:
-                    await db.execute(f'UPDATE users SET room = "{message_text}" WHERE userId = "{idu}"')
-                    await db.execute(f'UPDATE users SET pastRooms = "{message_text}" WHERE userId = "{idu}"')
+                    await db.execute(f'UPDATE users SET room = ? WHERE userId = ?', (message_text, idu,))
+                    await db.execute(f'UPDATE users SET pastRooms = ? WHERE userId = ?', (message_text, idu,))
                     await db.commit()
                     while_exit = 1
                     return message_text.text
@@ -78,14 +80,14 @@ async def update_user_room(idu):
 
 async def update_user_message(idu):
     async with aiosqlite.connect("action.db") as db:
-        async with db.execute(f'SELECT * FROM users WHERE userId = "{idu}"') as cursor:
+        async with db.execute(f'SELECT * FROM users WHERE userId = ?', (idu,)) as cursor:
             record = await cursor.fetchone()
             if record:
                 name, dates, persons, gender, room = record[2], record[3], record[4], record[5], record[6]
             else:
                 name, dates, persons, gender, room = None, None, None, None, None
 
-        await bot.send_message(chat_id=channel_id,
+        await bot.send_message(chat_id=CHAT_ID,
                                text='<b>Исправленные данные от гостя:</b>\n\n'
                                     f'1. Имя: <b>{name}</b>\n'
                                     f'2. Даты: <b>{dates}</b>\n'
@@ -98,7 +100,7 @@ async def update_user_message(idu):
 
 async def mistake_user_room(idu):
     async with aiosqlite.connect("action.db") as db:
-        async with db.execute(f'SELECT pastRooms FROM users WHERE userId = "{idu}"') as cursor:
+        async with db.execute(f'SELECT pastRooms FROM users WHERE userId = ?', (idu,)) as cursor:
             tuple_past_room = await cursor.fetchone()
             if tuple_past_room:
                 pastRoom = tuple_past_room[0]
@@ -122,8 +124,8 @@ async def mistake_user_room(idu):
             message_text = vk_ms.messages.getHistory(user_id=idu, count=1)['items'][0]['text']
             if len(message_text) < 282:
                 async with aiosqlite.connect("action.db") as db:
-                    await db.execute(f'UPDATE users SET room = "{message_text}" WHERE userId = "{idu}"')
-                    async with db.execute(f'SELECT * FROM users WHERE userId = "{idu}"') as cursor:
+                    await db.execute(f'UPDATE users SET room = ? WHERE userId = ?', (message_text, idu,))
+                    async with db.execute(f'SELECT * FROM users WHERE userId = ?', (idu,)) as cursor:
                         rooms = await cursor.fetchone()
 
                         if rooms:
@@ -134,7 +136,7 @@ async def mistake_user_room(idu):
 
                         summation = room + past_room
 
-                    await db.execute(f'UPDATE users SET pastRooms = "{summation}" WHERE userId = "{idu}"')
+                    await db.execute(f'UPDATE users SET pastRooms = ? WHERE userId = ?', (summation, idu,))
                     await db.commit()
                     while_exit = 1
                     return message_text.text
