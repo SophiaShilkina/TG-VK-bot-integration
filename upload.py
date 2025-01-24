@@ -1,4 +1,4 @@
-from vksession import vk_ms
+from botsinit import vk_ms
 
 import time
 import vk_api

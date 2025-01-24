@@ -2,11 +2,11 @@ import aiosqlite
 import time
 import random
 
-from vksession import vk_ms
+from botsinit import vk_ms
 from keyboards import keyboard_tg
 from upload import attachment
-from vksession import bot
-from sett import CHAT_ID
+from config import CHAT_ID
+from msg import send_message_to_user
 
 
 async def update_user_data(idu):
@@ -87,15 +87,13 @@ async def update_user_message(idu):
             else:
                 name, dates, persons, gender, room = None, None, None, None, None
 
-        await bot.send_message(chat_id=CHAT_ID,
-                               text='<b>Исправленные данные от гостя:</b>\n\n'
-                                    f'1. Имя: <b>{name}</b>\n'
-                                    f'2. Даты: <b>{dates}</b>\n'
-                                    f'3. Человек: <b>{persons}</b>\n'
-                                    f'4. М/Ж: <b>{gender}</b>\n'
-                                    f'5. Комнаты: <b>{room}</b>',
-                               parse_mode='html',
-                               reply_markup=keyboard_tg)
+        await send_message_to_user('<b>Исправленные данные от гостя:</b>\n\n'
+                                   f'1. Имя: <b>{name}</b>\n'
+                                   f'2. Даты: <b>{dates}</b>\n'
+                                   f'3. Человек: <b>{persons}</b>\n'
+                                   f'4. М/Ж: <b>{gender}</b>\n'
+                                   f'5. Комнаты: <b>{room}</b>',
+                                   keyboard_tg)
 
 
 async def mistake_user_room(idu):

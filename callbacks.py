@@ -1,8 +1,12 @@
-from sett import CHAT_ID
-from msg import write_msg
+from config import CHAT_ID
+from msg import write_msg, send_message_to_user
 from keyboards import *
 from updates import *
-from vksession import bot
+from botsinit import router
+
+from aiogram import types, F, Router
+from aiogram.types import Message, CallbackQuery
+from aiogram.filters import Command
 
 
 async def callback_operations(idu, message_1):
@@ -18,56 +22,61 @@ async def callback_operations(idu, message_1):
         'user_message_received': False,
     }
 
-    bot.send_message(chat_id=CHAT_ID,
-                     text='<b>Новая заявка от бота</b>\n\n' + message_1,
-                     parse_mode='html',
-                     reply_markup=keyboard_tg)
+    await send_message_to_user(f"<b>Новая заявка от бота</b>\n\n{message_1}",
+                               keyboard_tg)
 
-    @bot.callback_query_handler(func=lambda callback: True)
-    async def check_callback_data(callback):
+    @router.callback_query(F.data == 'yes')
+    async def yes(callback: CallbackQuery):
+        await write_msg(idu,
+                        '😸 На ваши даты есть места! Скоро оператор подключится в чат.')
+        await callback.message.answer(f'Принято, отправляю\n\n<a href="https://vk.com/gim226206756?sel'
+                             f'={idu}">Подключиться в чат</a>')
+
+    @router.callback_query(F.data == 'rooms')
+    async def rooms(callback: CallbackQuery):
+        await callback.message.answer('Принято, прошу гостя поменять комнату')
+        await mistake_user_room(idu)
+        flags['flag'] = True
+        if flags['flag']:
+            await write_msg(idu, 'Спасибо за понимание! Буду рад помочь вам найти '
+                                 'подходящий вариант размещения. Отправил данные коллегам.')
+            await update_user_message(idu)
+            flags['flag'] = False
+
+    @router.callback_query(F.data == 'what')
+    async def what(callback: CallbackQuery):
+        await callback.message.answer(f"{message_1}\n\nВыбери пункт или пункты, в \nкоторых есть ошибка",
+                                      keyboard_tg1)
+
+    @router.callback_query(F.data == '2')
+    async def mistake2(callback: CallbackQuery):
         nonlocal message_mistake
-        print("1111")
-        if callback.data == 'yes':
-            print("2222")
-            await write_msg(idu,
-                      '😸 На ваши даты есть места! Скоро оператор подключится в чат.')
-            bot.send_message(callback.message.chat.id,
-                             f'Принято, отправляю\n\n<a href="https://vk.com/gim226206756?sel'
-                             f'={idu}">Подключиться в чат</a>', parse_mode='html')
+        message_mistake += '❗даты'
+        flags['flag2'] = True
+        await callback.message.answer('2 пункт')
 
-        if callback.data == 'rooms':
-            bot.send_message(callback.message.chat.id, 'Принято, прошу гостя поменять комнату')
-            await mistake_user_room(idu)
-            flags['flag'] = True
-            if flags['flag']:
-                await write_msg(idu, 'Спасибо за понимание! Буду рад помочь вам найти '
-                               'подходящий вариант размещения. Отправил данные коллегам.')
-                await update_user_message(idu)
-                flags['flag'] = False
+    @router.callback_query(F.data == '3')
+    async def mistake3(callback: CallbackQuery):
+        nonlocal message_mistake
+        message_mistake += '❗число человек'
+        flags['flag3'] = True
+        await callback.message.answer('3 пункт')
 
-        if callback.data == 'what':
-            bot.edit_message_text(chat_id=CHAT_ID,
-                                  message_id=callback.message.message_id,
-                                  text=message_1 + "\n\nВыбери пункт или пункты, в "
-                                                   "\nкоторых есть ошибка",
-                                  parse_mode='html',
-                                  reply_markup=keyboard_tg1)
-        if callback.data == '2':
-            message_mistake += '❗даты'
-            flags['flag2'] = True
-            bot.send_message(callback.message.chat.id, '2 пункт')
-        if callback.data == '3':
-            message_mistake += '❗число человек'
-            flags['flag3'] = True
-            bot.send_message(callback.message.chat.id, '3 пункт')
-        if callback.data == '4':
-            message_mistake += '❗cоотношение человек'
-            flags['flag4'] = True
-            bot.send_message(callback.message.chat.id, '4 пункт')
-        if callback.data == '5':
-            message_mistake += '❗комнаты'
-            flags['flag5'] = True
-            bot.send_message(callback.message.chat.id, '5 пункт')
+    @router.callback_query(F.data == '4')
+    async def mistake4(callback: CallbackQuery):
+        nonlocal message_mistake
+        message_mistake += '❗cоотношение человек'
+        flags['flag4'] = True
+        await callback.message.answer('4 пункт')
+
+    @router.callback_query(F.data == '5')
+    async def mistake5(callback: CallbackQuery):
+        nonlocal message_mistake
+        message_mistake += '❗комнаты'
+        flags['flag5'] = True
+        await callback.message.answer('5 пункт')
+
+
         if callback.data == 'allFail':
             await write_msg(idu,
                       f'Оператор нашел ошибку/несостыковку в заполненной Вами форме, '

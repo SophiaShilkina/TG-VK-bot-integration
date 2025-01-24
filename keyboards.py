@@ -1,5 +1,5 @@
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
-from telebot import types
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 # клавиатуры ВК
 
@@ -27,24 +27,18 @@ keyboard5.add_button('Начать', color=VkKeyboardColor.POSITIVE)
 
 # клавиатуры ТГ
 
-keyboard_tg = types.InlineKeyboardMarkup()
-key_yes = types.InlineKeyboardButton(text='Да, места есть', callback_data='yes')
-keyboard_tg.add(key_yes)
-key_rooms = types.InlineKeyboardButton(text='Нет мест в указанной комнате', callback_data='rooms')
-keyboard_tg.add(key_rooms)
-key_what = types.InlineKeyboardButton(text='Неправильно заполнено »', callback_data='what')
-keyboard_tg.add(key_what)
-key_no = types.InlineKeyboardButton(text='Нет, мест нет', callback_data='no')
-keyboard_tg.add(key_no)
+keyboard_tg = InlineKeyboardMarkup(inline_keyboard=[
+    [InlineKeyboardButton(text='Да, места есть', callback_data='yes')],
+    [InlineKeyboardButton(text='Нет мест в указанной комнате', callback_data='rooms')],
+    [InlineKeyboardButton(text='Неправильно заполнено »', callback_data='what')],
+    [InlineKeyboardButton(text='Нет, мест нет', callback_data='no')]
+])
 
-keyboard_tg1 = types.InlineKeyboardMarkup()
-key_2 = types.InlineKeyboardButton(text='2 пункт', callback_data='2')
-key_3 = types.InlineKeyboardButton(text='3 пункт', callback_data='3')
-keyboard_tg1.add(key_2, key_3)
-key_4 = types.InlineKeyboardButton(text='4 пункт', callback_data='4')
-key_5 = types.InlineKeyboardButton(text='5 пункт', callback_data='5')
-keyboard_tg1.add(key_4, key_5)
-key_ready = types.InlineKeyboardButton(text='Готово', callback_data='ready')
-keyboard_tg1.add(key_ready)
-key_allFail = types.InlineKeyboardButton(text='Неверно 2-5 пункты', callback_data='allFail')
-keyboard_tg1.add(key_allFail)
+keyboard_tg1 = InlineKeyboardMarkup(inline_keyboard=[
+    [InlineKeyboardButton(text='2 пункт', callback_data='2'),
+     InlineKeyboardButton(text='3 пункт', callback_data='3')],
+    [InlineKeyboardButton(text='4 пункт', callback_data='4'),
+     InlineKeyboardButton(text='5 пункт', callback_data='5')],
+    [InlineKeyboardButton(text='Готово', callback_data='ready')],
+    [InlineKeyboardButton(text='Неверно 2-5 пункты', callback_data='allFail')]
+])

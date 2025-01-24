@@ -1,13 +1,11 @@
 from vk_api.longpoll import VkLongPoll, VkEventType
 
 from msg import *
-from vksession import vk_session
+from botsinit import vk_session
 from keyboards import *
-from updates import *
 from actionsdb import *
-from vksession import bot
 from callbacks import callback_operations
-from sett import CHAT_ID
+from config import CHAT_ID
 
 longpoll = VkLongPoll(vk_session)
 

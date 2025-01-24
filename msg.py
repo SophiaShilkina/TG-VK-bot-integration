@@ -1,6 +1,7 @@
 import random
-from vksession import vk_session
+from botsinit import vk_session, bot
 from upload import attachment
+from config import CHAT_ID
 
 
 async def write_msg(user_id, message, keyboard=None):
@@ -29,3 +30,10 @@ async def write_msg_with_photo(peer_id, message):
     }
 
     vk_session.method('messages.send', post)
+
+
+async def send_message_to_user(message_text, reply_markup):
+    try:
+        await bot.send_message(CHAT_ID, message_text, reply_markup)
+    except Exception as e:
+        print(f"Ошибка при отправке сообщения: {e}")
