@@ -5,8 +5,7 @@ import random
 from botsinit import vk_ms
 from keyboards import keyboard_tg
 from upload import attachment
-from config import CHAT_ID
-from msg import send_message_to_user
+from msg import send_message_to_user, write_msg_with_photo
 
 
 async def update_user_data(idu):
@@ -105,16 +104,13 @@ async def mistake_user_room(idu):
             else:
                 pastRoom = None
 
-    await vk_ms.messages.send(peer_id=idu,
-                              message=f'🛏 К сожалению, в выбранной Вами комнате на данные даты '
+    await write_msg_with_photo(idu, f'🛏 К сожалению, в выбранной Вами комнате на данные даты '
                                       f'мест нет.\n\nПожалуйста, посмотрите другие доступные '
                                       f'варианты и сообщите нам, какую комнату Вы бы хотели '
                                       f'забронировать. Мы постараемся найти для Вас подходящий '
                                       f'вариант размещения. Спасибо за понимание!\n\n🔙 Ваш '
                                       f'прошлый выбор комнаты: '
-                                      f'{pastRoom}',
-                              random_id=random.randint(1, 1000000),
-                              attachment=attachment())
+                                      f'{pastRoom}')
 
     while_exit = 0
     while while_exit != 1:

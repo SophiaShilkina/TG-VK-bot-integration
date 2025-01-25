@@ -5,7 +5,7 @@ from botsinit import vk_session
 from keyboards import *
 from actionsdb import *
 from callbacks import callback_operations
-from config import CHAT_ID
+from config import CHANNEL_ID
 
 longpoll = VkLongPoll(vk_session)
 

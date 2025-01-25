@@ -3,6 +3,7 @@ from botsinit import vk_ms
 import time
 import asyncio
 
+
 # Проверяем пользователя в базе данных
 async def checking_user_in_database(idu):
     async with aiosqlite.connect('action.db') as db:

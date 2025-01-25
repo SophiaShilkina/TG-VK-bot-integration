@@ -17,5 +17,5 @@ def read_config(settings_file):
 config = read_config(settings_file)
 TOKEN_VK = config['TOKEN_VK']
 TOKEN_TG = config['TOKEN_TG']
-CHAT_ID = config['CHAT_ID']
-print(f'{TOKEN_VK, TOKEN_TG, CHAT_ID}')
+CHANNEL_ID = config['CHAT_ID']
+print(f'{TOKEN_VK, TOKEN_TG, CHANNEL_ID}')
