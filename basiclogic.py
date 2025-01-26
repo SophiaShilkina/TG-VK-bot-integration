@@ -4,7 +4,7 @@ from msg import *
 from botsinit import vk_session
 from keyboards import *
 from actionsdb import *
-from callbacks import callback_operations
+from tryp import callback_operations
 from config import CHANNEL_ID
 
 longpoll = VkLongPoll(vk_session)
@@ -178,7 +178,7 @@ async def message_handler(idu, message_text, event):
 
         if message_1 != 0:
             print(11)
-            await callback_operations(idu, message_1)
+            await callback_operations(message_1)
             message_1 = ""
 
     elif message_text == 'позвать оператора':

@@ -1,4 +1,4 @@
-from botsinit import main_bot
+from tryp import main_bot
 from basiclogic import main_loop
 import asyncio
 import logging
