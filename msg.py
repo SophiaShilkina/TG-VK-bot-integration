@@ -32,7 +32,7 @@ async def write_msg_with_photo(peer_id, message):
     vk_session.method('messages.send', post)
 
 
-async def send_message_to_user(message_text, reply_markup):
+async def send_message_to_admin(message_text, reply_markup):
     try:
         await bot.send_message(CHANNEL_ID, message_text, reply_markup=reply_markup)
     except Exception as e:

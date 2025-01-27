@@ -1,11 +1,8 @@
 import aiosqlite
 import time
-import random
-
 from botsinit import vk_ms
 from keyboards import keyboard_tg
-from upload import attachment
-from msg import send_message_to_user, write_msg_with_photo
+from msg import send_message_to_admin, write_msg_with_photo
 
 
 async def update_user_data(idu):
@@ -86,7 +83,7 @@ async def update_user_message(idu):
             else:
                 name, dates, persons, gender, room = None, None, None, None, None
 
-        await send_message_to_user('<b>Исправленные данные от гостя:</b>\n\n'
+        await send_message_to_admin('<b>Исправленные данные от гостя:</b>\n\n'
                                    f'1. Имя: <b>{name}</b>\n'
                                    f'2. Даты: <b>{dates}</b>\n'
                                    f'3. Человек: <b>{persons}</b>\n'

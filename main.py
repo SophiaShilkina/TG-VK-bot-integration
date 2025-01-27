@@ -1,4 +1,4 @@
-from tryp import main_bot
+from callbacks import main_bot
 from basiclogic import main_loop
 import asyncio
 import logging

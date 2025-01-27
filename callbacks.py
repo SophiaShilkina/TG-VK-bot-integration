@@ -1,5 +1,5 @@
 from aiogram import F
-from msg import write_msg, write_msg_with_photo
+from msg import *
 from botsinit import bot, dp
 from updates import *
 
@@ -17,8 +17,8 @@ async def main_bot():
 
 
 async def callback_operations():
-    await send_message_to_user(f"<b>Новая заявка от бота</b>\n\n",
-                               keyboard_tg)
+    await send_message_to_admin(f"<b>Новая заявка от бота</b>\n\n",
+                                keyboard_tg)
 
 router = Router()
 
