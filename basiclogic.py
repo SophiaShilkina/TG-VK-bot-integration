@@ -115,7 +115,7 @@ async def message_handler(idu, message_text, event):
                 await changing_act(idu, userAct)
                 while_blok = 0
 
-            elif userAct == "gender":
+            if userAct == "gender":
                 await write_msg(idu,
                                 'Хорошо, введите верное соотношение, соблюдая данный формат и '
                                 'используя только числа:\n\n❗Число мужчин / число женщин❗')
@@ -124,7 +124,7 @@ async def message_handler(idu, message_text, event):
                 await changing_act(idu, userAct)
                 while_blok = 0
 
-            elif userAct == "room":
+            if userAct == "room":
                 await write_msg_with_photo(idu,
                                            'Хорошо, введите верную комнату (верные комнаты), в '
                                            'которой Вы бы предпочли проживать в нашем хостеле.')
@@ -133,7 +133,7 @@ async def message_handler(idu, message_text, event):
                 await changing_act(idu, userAct)
                 while_blok = 0
 
-    if message_text == 'все верно':
+    if userAct == "exit":
         userAct = "go"
         await changing_act(idu, userAct)
 
@@ -160,15 +160,14 @@ async def message_handler(idu, message_text, event):
                         'даты, администрация не возвращает денежные средства, внесенные за проживание;\n• '
                         'Гость обязан заранее предупредить о продлении брони. В случае неоплаты до 12:00, '
                         'администрация вправе заселить другого гостя.\n\nНам будет очень жаль, но ради '
-                        'душевного спокойствия наших гостей и конечно персонала хостела, администрация '
+                        'душевного спокойствия наших гостей и, конечно, персонала хостела, администрация '
                         'оставляет за собой право на выселение любого проживающего в случае нарушения '
                         'общественного порядка и правил проживания, без возврата денежных средств.',
                         keyboard2)
-        user_get = vk_ms.users.get(user_ids=event.user_id)
-        fullname = user_get[0]['first_name'] + ' ' + user_get[0]['last_name']
-        await get_user_name(idu, fullname)
 
-    elif message_text == 'прочитал(а) и принимаю правила':
+
+    if message_text == 'прочитал(а) и принимаю правила':
+
         await write_msg(idu,
                         'Я отправил эту информацию своим коллегам. '
                         'Она поможет им подобрать для вас самые комфортные условия проживания.')
@@ -181,7 +180,6 @@ async def message_handler(idu, message_text, event):
         print(message_1)
 
         if message_1 != 0:
-            print(11)
             await callback_operations(message_1)
             message_1 = ""
 

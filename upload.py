@@ -1,10 +1,11 @@
 from botsinit import vk_ms
+import asyncio
 
 import time
 import vk_api
 
 
-def attachment():
+async def attachment():
     upload = vk_api.VkUpload(vk_ms)
     photo = None
     while not photo:
@@ -13,7 +14,7 @@ def attachment():
             print("Фото загружено.")
         except KeyboardInterrupt:
             print("Программа была прервана пользователем.")
-            time.sleep(10)
+            await asyncio.sleep(10)
     owner_id = photo[0]['owner_id']
     photo_id = photo[0]['id']
     access_key = photo[0]['access_key']

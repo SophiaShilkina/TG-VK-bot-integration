@@ -11,13 +11,12 @@ import asyncio
 
 async def main_bot():
     dp.include_router(router)
-    await callback_operations()
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
 
 
-async def callback_operations():
-    await send_message_to_admin(f"<b>Новая заявка от бота</b>\n\n",
+async def callback_operations(message_1):
+    await send_message_to_admin(f"<b>Новая заявка от бота</b>\n\n{message_1}",
                                 keyboard_tg)
 
 router = Router()

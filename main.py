@@ -7,12 +7,15 @@ from database import init_db
 import time
 
 
+async def main():
+    await init_db()
+    await asyncio.gather(main_bot(), main_loop())
+
+
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
     try:
-        asyncio.run(init_db())
-        asyncio.run(main_loop())
-        logging.basicConfig(level=logging.INFO)
-        asyncio.run(main_bot())
+        asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
         time.sleep(5)
         pass

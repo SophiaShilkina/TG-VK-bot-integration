@@ -26,7 +26,7 @@ async def write_msg_with_photo(peer_id, message):
         'peer_id': peer_id,
         'message': message,
         'random_id': random.randint(1, 1000000),
-        'attachment': attachment()
+        'attachment': await attachment()
     }
 
     vk_session.method('messages.send', post)

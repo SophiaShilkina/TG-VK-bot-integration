@@ -1,4 +1,4 @@
-# TG-VK-bot-integration 
+# TG-VK-bot-integration ![GitHub Repo stars](https://img.shields.io/github/stars/SophiaShilkina/TG-VK-bot-integration)
 
 ![Static Badge](https://img.shields.io/badge/SophiaShilkina-TG--VK--bot--integration-TG--VK--bot--integration)
 ![GitHub top language](https://img.shields.io/github/languages/top/SophiaShilkina/TG-VK-bot-integration)
@@ -6,7 +6,8 @@
 ![vk-api version](https://img.shields.io/badge/vk--api-11.9.9-8a2be2)
 ![aiogram version](https://img.shields.io/badge/aiogram-3.17.0-ff970f)
 ![aiosqlite version](https://img.shields.io/badge/aiosqlite-0.20.0-9f8200)
-![GitHub Repo stars](https://img.shields.io/github/stars/SophiaShilkina/TG-VK-bot-integration)
+
+## Multilanguage README [![en readme](https://img.shields.io/badge/lang-en-ff6347)](https://github.com/SophiaShilkina/TG-VK-bot-integration/tree/master/docs/readme.en.md) [![ru readme](https://img.shields.io/badge/lang-ru-ru)](https://github.com/SophiaShilkina/TG-VK-bot-integration/tree/master/docs/readme.md)
 
 Этот проект представляет собой бота ВКонтакте для оперативного 
 реагирования на заявки клиентов. За счет отсутствия времени ожидания 
@@ -19,7 +20,7 @@
 ## Описание
 
 Данный бот автоматизирует процесс обработки сообщения от клиентов, 
-перенеся часть задач в Telegram. Это позволяет администраторам 
+перенося часть задач в Telegram. Это позволяет администраторам 
 быстрее реагировать на запросы, управлять диалогами и обеспечивать 
 высокий уровень обслуживания.
 

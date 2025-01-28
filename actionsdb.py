@@ -2,6 +2,7 @@ import aiosqlite
 from botsinit import vk_ms
 import time
 import asyncio
+import logging
 
 
 # Проверяем пользователя в базе данных
@@ -79,10 +80,19 @@ async def presentation_of_information(idu):
 
 
 # Внесение имени пользователя в бд
-async def get_user_name(idu, fullname):
-    async with aiosqlite.connect('action.db') as db:
-        await db.execute('UPDATE users SET fullname = ? WHERE userId = ?', (fullname, idu,))
-        await db.commit()
+async def get_fullname(event):
+    try:
+        logging.info(f"Получение имени пользователя для ID: {event.user_id}")
+        user_get = vk_ms.users.get(user_ids=event.user_id)
+        fullname = user_get[0]['first_name'] + ' ' + user_get[0]['last_name']
+        logging.info(f"Получено имя: {fullname}")
+        async with aiosqlite.connect('action.db') as db:
+            await db.execute('UPDATE users SET fullname = ? WHERE userId = ?', (fullname, event.user_id,))
+            await db.commit()
+        return fullname
+    except Exception as e:
+        logging.error(f"Ошибка при получении имени пользователя: {e}")
+        return None
 
 
 # Подготовка текста сообщения с информацией от пользователя админу
