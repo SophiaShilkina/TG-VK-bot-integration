@@ -4,8 +4,6 @@ import asyncio
 import logging
 from database import init_db
 
-import time
-
 
 async def main():
     await init_db()
@@ -17,5 +15,5 @@ if __name__ == '__main__':
     try:
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
-        time.sleep(5)
+        asyncio.sleep(5)
         pass
