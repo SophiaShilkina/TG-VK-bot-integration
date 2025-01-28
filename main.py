@@ -1,5 +1,5 @@
 from callbacks import main_bot
-from basiclogic import main_loop
+from basic_logic import main_loop
 import asyncio
 import logging
 from database import init_db
@@ -13,7 +13,7 @@ async def main():
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     try:
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
