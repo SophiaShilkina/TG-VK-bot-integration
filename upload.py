@@ -1,7 +1,7 @@
-from botsinit import vk_ms
+from bots_init import vk_ms
 import asyncio
+import logging
 
-import time
 import vk_api
 
 
@@ -11,12 +11,13 @@ async def attachment():
     while not photo:
         try:
             photo = upload.photo_messages('prices.jpg')
-            print("Фото загружено.")
+            logging.info(f"Фото загружено: {photo}")
         except KeyboardInterrupt:
-            print("Программа была прервана пользователем.")
+            logging.error(f"Программа была прервана: {KeyboardInterrupt}")
             await asyncio.sleep(10)
+
     owner_id = photo[0]['owner_id']
     photo_id = photo[0]['id']
     access_key = photo[0]['access_key']
-    attachment = f'photo{owner_id}_{photo_id}_{access_key}'
-    return attachment
+    attachment_ph = f'photo{owner_id}_{photo_id}_{access_key}'
+    return attachment_ph
