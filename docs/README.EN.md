@@ -7,7 +7,7 @@
 ![aiogram version](https://img.shields.io/badge/aiogram-3.17.0-ff970f)
 ![aiosqlite version](https://img.shields.io/badge/aiosqlite-0.20.0-9f8200)
 
-## Multilanguage README [![en readme](https://img.shields.io/badge/lang-en-en)](https://github.com/SophiaShilkina/TG-VK-bot-integration/tree/master/docs/readme.en.md) [![ru readme](https://img.shields.io/badge/lang-ru-ff6347)](https://github.com/SophiaShilkina/TG-VK-bot-integration/tree/master/docs/readme.md)
+## Multilanguage README [![en readme](https://img.shields.io/badge/lang-en-en)](https://github.com/SophiaShilkina/TG-VK-bot-integration/blob/master/docs/README.EN.md) [![ru readme](https://img.shields.io/badge/lang-ru-ff6347)](https://github.com/SophiaShilkina/TG-VK-bot-integration/blob/master/docs/README.md)
 
 This project is a VKontakte bot for prompt response to customer requests. By eliminating waiting 
 time for user responses and instantly notifying the administrator in Telegram of new requests with 

@@ -7,7 +7,7 @@
 ![aiogram version](https://img.shields.io/badge/aiogram-3.17.0-ff970f)
 ![aiosqlite version](https://img.shields.io/badge/aiosqlite-0.20.0-9f8200)
 
-## Multilanguage README [![en readme](https://img.shields.io/badge/lang-en-ff6347)](https://github.com/SophiaShilkina/TG-VK-bot-integration/tree/master/docs/readme.en.md) [![ru readme](https://img.shields.io/badge/lang-ru-ru)](https://github.com/SophiaShilkina/TG-VK-bot-integration/tree/master/docs/readme.md)
+## Multilanguage README [![en readme](https://img.shields.io/badge/lang-en-ff6347)](https://github.com/SophiaShilkina/TG-VK-bot-integration/blob/master/docs/README.EN.md) [![ru readme](https://img.shields.io/badge/lang-ru-ru)](https://github.com/SophiaShilkina/TG-VK-bot-integration/blob/master/docs/README.md)
 
 Этот проект представляет собой бота ВКонтакте для оперативного 
 реагирования на заявки клиентов. За счет отсутствия времени ожидания 
