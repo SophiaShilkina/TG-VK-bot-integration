@@ -9,25 +9,28 @@
 
 ## Multilanguage README [![en readme](https://img.shields.io/badge/lang-en-en)](https://github.com/SophiaShilkina/TG-VK-bot-integration/blob/master/docs/README.EN.md) [![ru readme](https://img.shields.io/badge/lang-ru-ff6347)](https://github.com/SophiaShilkina/TG-VK-bot-integration/blob/master/docs/README.md)
 
+https://github.com/user-attachments/assets/07f5c16e-b10a-417d-a3ad-d74dbc6f5d08
+
 This project is a VKontakte bot for prompt response to customer requests. By eliminating waiting 
-time for user responses and instantly notifying the administrator in Telegram of new requests with 
-built-in moderation, the bot helps increase the conversion rate of the community. Effective 
+time for user responses and instantly notifying the administrator in Telegram about new requests 
+with built-in moderation capabilities can help improve the conversion rate of the community. Effective 
 moderation of requests and quick feedback with users are key aspects that contribute to an improved 
 customer experience.
 
 ## Description
 
 This bot automates the process of handling messages from customers, transferring some tasks to 
-Telegram. This allows administrators to respond to requests faster, manage dialogues, and provide 
+Telegram. This allows administrators to respond to requests faster, manage dialogues and provide 
 a high level of service.
 
 ## Functionality
 
-- Automatic sending of messages to customers in the VK chat bot.
-- Collection of required information from the user.
-- Notifications for administrators in Telegram about new requests.
-- Ability to moderate and manage the bot's responses in real-time.
-- Easily customizable interface and the ability to extend functionality.
+- Automatic messaging to customers in the VK chat bot.
+- Collection of required information from users.
+- Notifications to administrators in Telegram regarding new requests.
+- Real-time moderation and management of the bot's responses.
+- The ability to moderate and manage bot responses by multiple administrators.
+- User-friendly customizable interface with the capability to extend functionality.
 
 ## Installation
 
@@ -72,5 +75,5 @@ This project is licensed under the Apache License 2.0. See the LICENSE file for 
 
 ### Contacts
 
-If you have any questions, you can contact me on Telegram: 
+If you have any questions or suggestions about cooperation, you can contact me on Telegram: 
 [Sophia](https://t.me/ShilkinaSK).
