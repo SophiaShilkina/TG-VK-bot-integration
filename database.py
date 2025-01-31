@@ -18,6 +18,7 @@ async def init_db():
                 pastRooms TEXT
             )""")
             await db.commit()
+            logging.info("Users table created successfully.")
 
     except Exception as e:
         logging.error(f"An error occurred: {e}")
