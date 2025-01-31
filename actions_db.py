@@ -1,6 +1,5 @@
 import aiosqlite
-from botsinit import vk_ms
-import time
+from bots_init import vk_ms
 import asyncio
 import logging
 
@@ -48,9 +47,9 @@ async def saving_between_responses(idu, userAct):
                     while_exit = 1
                     return userAct
 
-        except:
-            pass
-        time.sleep(1)
+        except Exception as e:
+            logging.error(f"An error occurred: {e}")
+        await asyncio.sleep(1)
 
 
 # Изменение шага

@@ -1,8 +1,9 @@
 import aiosqlite
-import time
-from botsinit import vk_ms
+from bots_init import vk_ms
 from keyboards import keyboard_tg
 from msg import send_message_to_admin, write_msg_with_photo
+import asyncio
+import logging
 
 
 async def update_user_data(idu):
@@ -17,9 +18,9 @@ async def update_user_data(idu):
                     while_exit = 1
                     return message_text.text
 
-        except:
-            pass
-        time.sleep(1)
+        except Exception as e:
+            logging.error(f"An error occurred: {e}")
+        await asyncio.sleep(1)
 
 
 async def update_user_persons(idu):
@@ -34,9 +35,9 @@ async def update_user_persons(idu):
                     while_exit = 1
                     return message_text.text
 
-        except:
-            pass
-        time.sleep(1)
+        except Exception as e:
+            logging.error(f"An error occurred: {e}")
+        await asyncio.sleep(1)
 
 
 async def update_user_gender(idu):
@@ -51,9 +52,9 @@ async def update_user_gender(idu):
                     while_exit = 1
                     return message_text.text
 
-        except:
-            pass
-        time.sleep(1)
+        except Exception as e:
+            logging.error(f"An error occurred: {e}")
+        await asyncio.sleep(1)
 
 
 async def update_user_room(idu):
@@ -69,9 +70,9 @@ async def update_user_room(idu):
                     while_exit = 1
                     return message_text.text
 
-        except:
-            pass
-        time.sleep(1)
+        except Exception as e:
+            logging.error(f"An error occurred: {e}")
+        await asyncio.sleep(1)
 
 
 async def update_user_message(idu):
@@ -131,6 +132,7 @@ async def mistake_user_room(idu):
                     await db.commit()
                     while_exit = 1
                     return message_text.text
-        except:
-            pass
-        time.sleep(1)
+
+        except Exception as e:
+            logging.error(f"An error occurred: {e}")
+        await asyncio.sleep(1)
