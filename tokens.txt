@@ -1,3 +1,3 @@
-TOKEN_VK=vk1.a.5SlB465OXbRkv5nio****************************************
-TOKEN_TG=729******:AAHD********************
-CHANNEL_ID=-100*******
+TOKEN_VK=vk1.a.ABC123***********************
+TOKEN_TG=123****:ABCQWE*********
+CHANNEL_ID=-123*********
