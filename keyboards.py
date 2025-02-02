@@ -2,7 +2,6 @@ from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 # клавиатуры ВК
-
 keyboard = VkKeyboard(one_time=True)
 keyboard.add_button('Все верно', color=VkKeyboardColor.POSITIVE)
 keyboard.add_line()
@@ -26,7 +25,6 @@ keyboard5 = VkKeyboard(one_time=True)
 keyboard5.add_button('Начать', color=VkKeyboardColor.POSITIVE)
 
 # клавиатуры ТГ
-
 keyboard_tg = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text='Да, места есть', callback_data='yes')],
     [InlineKeyboardButton(text='Нет мест в указанной комнате', callback_data='rooms')],
