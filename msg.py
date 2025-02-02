@@ -1,7 +1,8 @@
 import random
-from botsinit import vk_session, bot
+from bots_init import vk_session, bot
 from upload import attachment
 from config import CHANNEL_ID
+from aiogram.enums import ParseMode
 
 
 async def write_msg(user_id, message, keyboard=None):
@@ -34,6 +35,6 @@ async def write_msg_with_photo(peer_id, message):
 
 async def send_message_to_admin(message_text, reply_markup):
     try:
-        await bot.send_message(CHANNEL_ID, message_text, reply_markup=reply_markup)
+        await bot.send_message(CHANNEL_ID, message_text, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
     except Exception as e:
         print(f"Ошибка при отправке сообщения: {e}")
