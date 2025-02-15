@@ -44,15 +44,15 @@ https://github.com/user-attachments/assets/07f5c16e-b10a-417d-a3ad-d74dbc6f5d08
    
 2. Установите зависимости:
    ```bash
-   pip install -r requirements.txt
+   pip install -r docs/requirements.txt
    ```
    
 3. Настройте переменные окружения для VK и Telegram API, изменив 
 **token.txt**:
    ```copy
-   TOKEN_VK=vk1.a.5SlB465OXbRkv5nio****************************************
-   TOKEN_TG=729******:AAHD********************
-   CHANNEL_ID=-100*******
+   TOKEN_VK=vk1.a.ABC123***********************
+   TOKEN_TG=123***:ABCQWE*********
+   CHANNEL_ID=-123*********
    ```
    
 ## Использование

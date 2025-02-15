@@ -40,14 +40,14 @@ a high level of service.
    
 2. Install the dependencies:
    ```bash
-   pip install -r requirements.txt
+   pip install -r docs/requirements.txt
    ```
    
 3. Configure environment variables for VK and Telegram API by modifying **token.txt**:
    ```copy
-   TOKEN_VK=vk1.a.5SlB465OXbRkv5nio****************************************
-   TOKEN_TG=729******:AAHD********************
-   CHANNEL_ID=-100*******
+   TOKEN_VK=vk1.a.ABC123***********************
+   TOKEN_TG=123***:ABCQWE*********
+   CHANNEL_ID=-123*********
    ```
    
 ## Usage
