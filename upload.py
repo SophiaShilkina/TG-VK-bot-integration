@@ -9,7 +9,7 @@ async def attachment():
     photo = None
     while not photo:
         try:
-            photo = upload.photo_messages('prices.jpg')
+            photo = upload.photo_messages('docs/prices.jpg')
             logging.info(f"Фото загружено: {photo}")
         except KeyboardInterrupt:
             logging.error(f"Программа была прервана: {KeyboardInterrupt}")

@@ -2,7 +2,7 @@ import os
 
 
 base_path = os.path.dirname(os.path.abspath(__file__))
-settings_file_path = os.path.join(base_path, 'tokens.txt')
+settings_file_path = os.path.join(base_path, 'docs/tokens.txt')
 
 
 def read_config(file_path):
