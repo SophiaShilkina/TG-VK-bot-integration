@@ -1,9 +1,10 @@
 import aiosqlite
 from bots_init import vk_ms
 from keyboards import keyboard_tg
-from msg import send_message_to_admin, write_msg_with_photo
+from msg import *
 import asyncio
 import logging
+import re
 
 
 async def update_user_data(idu):
@@ -12,6 +13,13 @@ async def update_user_data(idu):
         try:
             message_text = vk_ms.messages.getHistory(user_id=idu, count=1)['items'][0]['text']
             if len(message_text) < 89:
+                if not re.match(r'^\s*\d{1,2}\.\d{1,2}\.\d{2}\s*[\s\-–—]{1,5}\s*\d{1,2}\.\d{1,2}\.\d{2}\s*\.*\s*$',
+                                message_text):
+                    await write_msg(idu,
+                                    'Ваше сообщение не соответствует формату. Пожалуйста, пришлите даты '
+                                    'еще раз, придерживаясь формата:\n\nдд.мм.гг – дд.мм.гг')
+                    continue
+
                 async with aiosqlite.connect("action.db") as db:
                     await db.execute(f'UPDATE users SET data = ? WHERE userId = ?', (message_text, idu,))
                     await db.commit()
@@ -29,6 +37,13 @@ async def update_user_persons(idu):
         try:
             message_text = vk_ms.messages.getHistory(user_id=idu, count=1)['items'][0]['text']
             if len(message_text) < 84:
+                if not re.match(r'^\s*\d{1,3}\s*\.*\s*$',
+                                message_text):
+                    await write_msg(idu,
+                                    'Ваше сообщение не соответствует формату. Пожалуйста, пришлите '
+                                    'количество человек еще раз, придерживаясь формата:\n\nТолько число.')
+                    continue
+
                 async with aiosqlite.connect("action.db") as db:
                     await db.execute(f'UPDATE users SET persons = ? WHERE userId = ?', (message_text, idu,))
                     await db.commit()
@@ -46,6 +61,14 @@ async def update_user_gender(idu):
         try:
             message_text = vk_ms.messages.getHistory(user_id=idu, count=1)['items'][0]['text']
             if len(message_text) < 108:
+                if not re.match(r'^\s*\d{1,3}\s*[МЖмужчинаещ]*\s*[\\/]\s*\d{1,3}\s*[МЖмужчинаещ]*\s*\.*\s*$',
+                                message_text):
+                    await write_msg(idu,
+                                    'Ваше сообщение не соответствует формату. Пожалуйста, пришлите '
+                                    'соотношение человек еще раз, придерживаясь формата:\n\n'
+                                    'Число мужчин / Число женщин.')
+                    continue
+
                 async with aiosqlite.connect("action.db") as db:
                     await db.execute(f'UPDATE users SET gender = ? WHERE userId = ?', (message_text, idu,))
                     await db.commit()
