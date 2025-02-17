@@ -2,6 +2,8 @@ import aiosqlite
 from bots_init import vk_ms
 import asyncio
 import logging
+import re
+from msg import write_msg
 
 
 # Проверяем пользователя в базе данных
@@ -34,6 +36,26 @@ async def saving_between_responses(idu, userAct):
             await asyncio.sleep(1)
             message_text = vk_ms.messages.getHistory(user_id=idu, count=1)['items'][0]['text']
             if len(message_text) < 50:
+                if userAct == 'data':
+                    if not re.match(r'^\s*\d{1,2}\.\d{1,2}\.\d{2}\s*[\s\-–—]{1,5}\s*\d{1,2}\.\d{1,2}\.\d{2}\s*\.*\s*$',
+                             message_text):
+                        await write_msg(idu,
+                                        'Ваше сообщение не соответствует формату. Пожалуйста, пришлите даты '
+                                        'еще раз, придерживаясь формата:\n\nдд.мм.гг – дд.мм.гг')
+                    continue
+                if userAct == 'persons':
+                    if not re.match(r'^\s*\d{1,3}\s*\.*\s*$', message_text):
+                        await write_msg(idu, 'Ваше сообщение не соответствует формату. Пожалуйста, пришлите '
+                                     'количество человек еще раз, придерживаясь формата:\n\nТолько число.')
+                    continue
+                if userAct == 'gender':
+                    if not re.match(r'^\s*\d{1,3}\s*[МЖмужчинаещ]*\s*[\\/]\s*\d{1,3}\s*[МЖмужчинаещ]*\s*\.*\s*$',
+                         message_text):
+                        await write_msg(idu,'Ваше сообщение не соответствует формату. Пожалуйста, пришлите '
+                                            'соотношение человек еще раз, придерживаясь формата:\n\n'
+                                            'Число мужчин / Число женщин.')
+                    continue
+
                 async with aiosqlite.connect('action.db') as db:
                     await db.execute(f'UPDATE users SET act = ?, {userAct} = ? WHERE userId = ?',
                                      (userAct, message_text, idu,))
