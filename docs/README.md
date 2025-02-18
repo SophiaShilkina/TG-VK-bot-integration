@@ -38,7 +38,8 @@ https://github.com/user-attachments/assets/07f5c16e-b10a-417d-a3ad-d74dbc6f5d08
 
 ## Установка
 
-1. Перейдите в желаемую директорию и склонируйте репозиторий:
+1. **Скачайте файл Source code(zip/tar.gz) из последнего релиза** или перейдите 
+в желаемую директорию и склонируйте репозиторий:
    ```bash
    git clone https://github.com/SophiaShilkina/TG-VK-bot-integration.git
    

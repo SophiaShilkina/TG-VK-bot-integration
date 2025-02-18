@@ -34,7 +34,8 @@ a high level of service.
 
 ## Installation
 
-1. Navigate to the desired directory and clone the repository:
+1. **Download the Source code(zip/tar.gz) from the latest release** or navigate 
+to the desired directory and clone the repository:
    ```bash
    git clone https://github.com/SophiaShilkina/TG-VK-bot-integration.git
    
