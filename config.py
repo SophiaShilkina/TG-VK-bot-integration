@@ -18,4 +18,7 @@ config = read_config(settings_file_path)
 TOKEN_VK = config['TOKEN_VK']
 TOKEN_TG = config['TOKEN_TG']
 CHANNEL_ID = config['CHANNEL_ID']
-print(f'{TOKEN_VK, TOKEN_TG, CHANNEL_ID}')
+CONFIRMATION = config['CONFIRMATION']
+API_V = config['API_V']
+SECRET = config['SECRET']
+print(TOKEN_VK, TOKEN_TG, CHANNEL_ID, CONFIRMATION, API_V, SECRET, sep='\n')
