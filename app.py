@@ -1,17 +1,16 @@
 from fastapi import FastAPI, Request, Response
 from config import CONFIRMATION
-from responses_logic import message_handler
-from methods import send_message
-from actions_base import check_user_in_database_and_return_act
+from actions_base import check_user_in_database_and_return_act, user_act_handler
+from base import database_implementation
+import asyncio
 
 app = FastAPI()
-
-
 
 
 @app.post('/callback')
 async def callback(request: Request):
     data = await request.json()
+    print(data)
 
     if 'type' in data:
         if data['type'] == 'confirmation':
@@ -23,18 +22,13 @@ async def callback(request: Request):
             message = message_info.get('text', 'Не указано').lower()
 
             user_act = await check_user_in_database_and_return_act(user_id)
+            await user_act_handler(user_id, user_act, message)
 
-
-
-
-
-
-
-
-            return 'ok'
-    return 'ok'
+            return Response(content='ok', media_type="text/plain")
+    return Response(content='ok', media_type="text/plain")
 
 
 if __name__ == '__main__':
     import uvicorn
+    asyncio.run(database_implementation())
     uvicorn.run(app, host="127.0.0.1", port=8080)
