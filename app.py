@@ -19,10 +19,10 @@ async def callback(request: Request):
         elif data['type'] == 'message_new':
             message_info = data['object']['message']
             user_id = message_info.get('from_id', 'Не указано')
-            message = message_info.get('text', 'Не указано').lower()
+            message_incoming = message_info.get('text', 'Не указано').lower()
 
             user_act = await check_user_in_database_and_return_act(user_id)
-            await user_act_handler(user_id, user_act, message)
+            await user_act_handler(user_id, user_act, message_incoming)
 
             return Response(content='ok', media_type="text/plain")
     return Response(content='ok', media_type="text/plain")

@@ -34,20 +34,20 @@ async def check_user_in_database_and_return_act(user_id) -> str:
 
 
 # Валидация сообщений пользователя
-async def message_validation(user_id, user_act, message) -> str:
+async def message_validation(user_id, user_act, message_incoming) -> str:
     async with (async_session() as session):
         if user_act == 'dates':
             if not re.match(r'^\s*\d{1,2}\.\d{1,2}\.\d{2}\s*[\s\-–—]{1,5}\s*\d{1,2}\.\d{1,2}\.\d{2}\s*\.*\s*$',
-                            message):
+                            message_incoming):
                 user_act = 'dates_mistake'
 
         if user_act == 'persons':
-            if not re.match(r'^\s*\d{1,3}\s*\.*\s*$', message):
+            if not re.match(r'^\s*\d{1,3}\s*\.*\s*$', message_incoming):
                 user_act = 'persons_mistake'
 
         if user_act == 'gender':
             if not re.match(r'^\s*\d{1,3}\s*[МЖмужчинаещ]*\s*[\\/]\s*\d{1,3}\s*[МЖмужчинаещ]*\s*\.*\s*$',
-                            message):
+                            message_incoming):
                 user_act = 'gender_mistake'
 
         stmt = update(UsersBase).where(UsersBase.userId == user_id).values(act=user_act)
@@ -65,34 +65,35 @@ acts_tpl = ('start', 'dates', 'dates_mistake', 'persons', 'persons_mistake', 'ge
 
 # Реализация логики шагов пользователя через словарь
 def changed_act(user_act) -> str:
-    changed_acts_dict = {'dates': 'persons',
+    changed_acts_dict = {'start': 'dates',
+                         'dates': 'persons',
                          'persons': 'genders',
                          'genders': 'rooms'}
     user_act = changed_acts_dict.get(user_act)
     return user_act
 
 
-async def user_act_handler(user_id, user_act, message, acts_tuple=acts_tpl):
+async def user_act_handler(user_id, user_act, message_incoming, acts_tuple=acts_tpl):
     async with (async_session() as session):
-        if message == 'начать' or message == 'start':
-            messages = message_handler(user_act)
-            if type(messages) == tuple:
-                for message in messages:
-                    await send_message(user_id, message)
+        if message_incoming == 'начать' or message_incoming == 'start':
+            messages_outgoing = message_handler(user_act)
+            if type(messages_outgoing) is tuple:
+                for message_outgoing in messages_outgoing:
+                    await send_message(user_id, message_outgoing)
             else:
-                await send_message(user_id, messages)
+                await send_message(user_id, messages_outgoing)
 
-            stmt = update(UsersBase).where(UsersBase.userId == user_id).values(act='dates')
+            stmt = update(UsersBase).where(UsersBase.userId == user_id).values(act=changed_act(user_act))
             await session.execute(stmt)
             await session.commit()
             return
 
         if user_act in acts_tuple:
             if user_act in ('dates', 'persons', 'genders', 'rooms'):
-                user_act = await message_validation(user_id, user_act, message)
+                user_act = await message_validation(user_id, user_act, message_incoming)
                 if user_act in ('dates', 'persons', 'genders', 'rooms'):
                     await send_message(user_id, message_handler(user_act))
-                    column_value = {user_act: message}
+                    column_value = {user_act: message_incoming}
                     stmt = update(UsersBase).where(UsersBase.userId == user_id).values(**column_value,
                                                                                        act=changed_act(user_act))
                     await session.execute(stmt)
