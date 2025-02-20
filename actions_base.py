@@ -7,32 +7,34 @@ import re
 
 
 # Проверяем пользователя в базе данных и возвращаем его шаг
-async def check_user_in_database_and_return_act(user_id):
+async def check_user_in_database_and_return_act(user_id) -> str:
     async with (async_session() as session):
         stmt = select(UsersBase.userId).where(UsersBase.userId == user_id)
         result = await session.execute(stmt)
 
-        user_in_database = result.scalars_one_or_none()
+        user_in_database = result.scalar_one_or_none()
 
         if user_in_database is None:
             fullname = await get_fullname(user_id)
 
             session.add_all(
                 [
-                    UsersBase(userId=user_id, act='start', fullname=fullname, data=None,
-                              persons=None, gender=None, room=None, pastRooms=None),
+                    UsersBase(userId=user_id, act='start', fullname=fullname, dates=None,
+                              persons=None, genders=None, rooms=None, pastRooms=None),
                 ]
             )
             await session.commit()
 
         stmt = select(UsersBase.act).where(UsersBase.userId == user_id)
-        act = await session.execute(stmt)
+        result = await session.execute(stmt)
+
+        act = result.scalar_one_or_none()
 
         return act
 
 
 # Валидация сообщений пользователя
-async def message_validation(user_id, user_act, message):
+async def message_validation(user_id, user_act, message) -> str:
     async with (async_session() as session):
         if user_act == 'dates':
             if not re.match(r'^\s*\d{1,2}\.\d{1,2}\.\d{2}\s*[\s\-–—]{1,5}\s*\d{1,2}\.\d{1,2}\.\d{2}\s*\.*\s*$',
@@ -48,7 +50,7 @@ async def message_validation(user_id, user_act, message):
                             message):
                 user_act = 'gender_mistake'
 
-        stmt = update(UsersBase).where(UsersBase.userId == user_id).values(userAct=user_act)
+        stmt = update(UsersBase).where(UsersBase.userId == user_id).values(act=user_act)
         await session.execute(stmt)
         await session.commit()
 
@@ -61,28 +63,45 @@ acts_tpl = ('start', 'dates', 'dates_mistake', 'persons', 'persons_mistake', 'ge
             'rooms')
 
 
+# Реализация логики шагов пользователя через словарь
+def changed_act(user_act) -> str:
+    changed_acts_dict = {'dates': 'persons',
+                         'persons': 'genders',
+                         'genders': 'rooms'}
+    user_act = changed_acts_dict.get(user_act)
+    return user_act
+
+
 async def user_act_handler(user_id, user_act, message, acts_tuple=acts_tpl):
     async with (async_session() as session):
         if message == 'начать' or message == 'start':
             messages = message_handler(user_act)
-            for message in messages:
-                await send_message(user_id, message)
+            if type(messages) == tuple:
+                for message in messages:
+                    await send_message(user_id, message)
+            else:
+                await send_message(user_id, messages)
 
-            stmt = update(UsersBase).where(UsersBase.userId == user_id).values(userAct='dates')
+            stmt = update(UsersBase).where(UsersBase.userId == user_id).values(act='dates')
             await session.execute(stmt)
             await session.commit()
+            return
 
         if user_act in acts_tuple:
             if user_act in ('dates', 'persons', 'genders', 'rooms'):
                 user_act = await message_validation(user_id, user_act, message)
                 if user_act in ('dates', 'persons', 'genders', 'rooms'):
+                    await send_message(user_id, message_handler(user_act))
                     column_value = {user_act: message}
-                    stmt = update(UsersBase).where(UsersBase.userId == user_id).values(**column_value)
+                    stmt = update(UsersBase).where(UsersBase.userId == user_id).values(**column_value,
+                                                                                       act=changed_act(user_act))
                     await session.execute(stmt)
                     await session.commit()
+                    return
+
                 else:
                     await send_message(user_id, message_handler(user_act))
-                    user_act = user_act.split('_')[0]
-                    stmt = update(UsersBase).where(UsersBase.userId == user_id).values(userAct=user_act)
+                    stmt = update(UsersBase).where(UsersBase.userId == user_id).values(act=user_act.split('_')[0])
                     await session.execute(stmt)
                     await session.commit()
+                    return
