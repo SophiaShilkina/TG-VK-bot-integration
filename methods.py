@@ -59,18 +59,13 @@ async def upload_photo_to_vk():
             response = await client.get(url, params=params)
             url_info = response.json()['response']
             upload_url = url_info.get('upload_url', 'Не указано')
-            print('----------------------115', upload_url)
 
             async with aiofiles.open('docs/prices.jpg', 'rb') as photo:
-                print('----------------------120', photo)
                 file_data = await photo.read()
-                upload_response = await client.post(upload_url, files={'photo': file_data})
-                print('----------------------117', upload_response)
+                upload_response = await client.post(upload_url, files={'photo': ('prices.jpg', file_data, 'image/jpeg')})
                 upload_data = upload_response.json()
-                print('----------------------118', upload_data)
 
                 url = await save_photo(upload_data['photo'], upload_data['server'], upload_data['hash'])
-                print('----------------------113', url)
 
                 return url
 
@@ -92,7 +87,6 @@ async def save_photo(photo, server, hash):
     async with httpx.AsyncClient() as client:
         response = await client.post(url, params=params)
         response_data = response.json()
-        print('----------------------114', response_data)
         if 'response' not in response_data:
             raise ValueError("Ошибка сохранения фото: " + str(response_data))
 
