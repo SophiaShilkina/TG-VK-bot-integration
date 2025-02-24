@@ -2,7 +2,7 @@ import httpx
 import random
 from config import TOKEN_VK, API_V
 import aiofiles
-import os
+import json
 
 
 async def send_message(user_id, message, attachment=None, keyboard=None):
@@ -17,7 +17,7 @@ async def send_message(user_id, message, attachment=None, keyboard=None):
     if attachment:
         params['attachment'] = attachment
     if keyboard:
-        params['keyboard'] = keyboard
+        params['keyboard'] = json.dumps(keyboard)
 
     async with httpx.AsyncClient() as client:
         await client.get(url, params=params)
