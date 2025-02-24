@@ -1,5 +1,5 @@
 from aiogram import F
-from msg import *
+from methods import *
 from bots_init import bot, dp
 from updates import *
 

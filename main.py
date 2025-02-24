@@ -1,8 +1,5 @@
-from callbacks import main_bot
-from basic_logic import main_loop
 import asyncio
 import logging
-from database import init_db
 
 
 async def main():
