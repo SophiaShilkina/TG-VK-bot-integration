@@ -2,14 +2,68 @@ from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 # клавиатуры ВК
-keyboard = VkKeyboard(one_time=True)
-keyboard.add_button('Все верно', color=VkKeyboardColor.POSITIVE)
-keyboard.add_line()
-keyboard.add_button('📆 Изменить даты', color=VkKeyboardColor.SECONDARY)
-keyboard.add_button('👔 Изменить число персон', color=VkKeyboardColor.SECONDARY)
-keyboard.add_line()
-keyboard.add_button('👫 Изменить соотношение', color=VkKeyboardColor.SECONDARY)
-keyboard.add_button('🏡 Изменить комнаты', color=VkKeyboardColor.SECONDARY)
+
+keyboard = {
+    "one_time": True,
+    "buttons": [
+        [
+            {
+                "action": {
+                    "type": "callback",
+                    "label": "Все верно",
+                    "payload": {
+                        "command": "all_right"
+                    }
+                },
+                "color": "positive"
+            }
+        ],
+        [
+            {
+                "action": {
+                    "type": "callback",
+                    "label": "📆 Изменить даты",
+                    "payload": {
+                        "command": "dates_changed"
+                    }
+                },
+                "color": "secondary"
+            },
+            {
+                "action": {
+                    "type": "callback",
+                    "label": "👔 Изменить число персон",
+                    "payload": {
+                        "command": "persons_changed"
+                    }
+                },
+                "color": "secondary"
+            }
+        ],
+        [
+            {
+                "action": {
+                    "type": "callback",
+                    "label": "👫 Изменить соотношение",
+                    "payload": {
+                        "command": "genders_changed"
+                    }
+                },
+                "color": "secondary"
+            },
+            {
+                "action": {
+                    "type": "callback",
+                    "label": "🏡 Изменить комнаты",
+                    "payload": {
+                        "command": "rooms_changed"
+                    }
+                },
+                "color": "secondary"
+            }
+        ]
+    ]
+}
 
 keyboard2 = VkKeyboard(one_time=True)
 keyboard2.add_button('Прочитал(а) и принимаю правила', color=VkKeyboardColor.POSITIVE)
